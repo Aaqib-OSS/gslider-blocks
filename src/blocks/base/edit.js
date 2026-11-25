@@ -44,6 +44,7 @@ export default function Edit( {
 		slideEffect,
 		mousewheelControl,
 		keyboardNavigation,
+		enableHashNavigation,
 		paginationType,
 		dynamicBullets,
 
@@ -158,6 +159,10 @@ export default function Edit( {
 		// Build Swiper settings
 		const swiperSettings = {
 			effect: sliderType === 'carousel' ? carouselEffect : slideEffect,
+			// Deep links, used only when the option is on
+			...( enableHashNavigation && {
+				hashNavigation: { watchState: true },
+			} ),
 			...( sliderType === 'carousel' && {
 				breakpoints: {
 					0: {
@@ -256,6 +261,7 @@ export default function Edit( {
 		infiniteLoop,
 		autoplay,
 		autoplayDelay,
+		enableHashNavigation,
 		pauseOnHover,
 		stopOnLastSlide,
 		reverseDirection,
@@ -285,6 +291,7 @@ export default function Edit( {
 	const handleAddItem = () => {
 		const newItem = {
 			id: `item-${ sliderItems.length + 1 }`,
+			slideHash: '',
 			subTitle: 'Sub Title',
 			title: `Slider Item ${ sliderItems.length + 1 }`,
 			description:
@@ -548,7 +555,14 @@ export default function Edit( {
 				>
 					<div className="swiper-wrapper">
 						{ sliderItemList.map( ( item, index ) => (
-							<div className="swiper-slide" key={ item.id }>
+							<div
+								className="swiper-slide"
+								key={ item.id }
+								{ ...( enableHashNavigation &&
+									item.slideHash && {
+										'data-hash': item.slideHash,
+									} ) }
+							>
 								<div
 									className={ `gslider-content-wrapper ${ item.id }` }
 									ref={ panelRef }
