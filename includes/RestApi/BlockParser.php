@@ -573,6 +573,10 @@ if ( ! class_exists( BlockParser::class, false ) ) {
 				$config['centeredSlides'] = true;
 			}
 
+			if ( 'gslider-blocks/flexi-content' === $block_name && ! empty( $attrs['centeredSlides'] ) ) {
+				$config['centeredSlides'] = true;
+			}
+
 			return $config;
 		}
 
